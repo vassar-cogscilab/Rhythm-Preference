@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugins/jspsych-forced-choice-audio.js"></script>
+    <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css"></link>
+  </head>
+  <body></body>
+  <script>
+
+    var list = [
+      'patterns/Rhythm-0.mp3',
+      'patterns/Rhythm-1.mp3',
+      'patterns/Rhythm-2.mp3',
+      'patterns/Rhythm-3.mp3',
+      'patterns/Rhythm-4.mp3',
+      'patterns/Rhythm-5.mp3',
+      'patterns/Rhythm-6.mp3',
+      'patterns/Rhythm-7.mp3',
+      'patterns/Rhythm-8.mp3',
+      'patterns/Rhythm-9.mp3',
+      'patterns/Rhythm-10.mp3',
+      'patterns/Rhythm-11.mp3',
+      'patterns/Rhythm-12.mp3',
+      'patterns/Rhythm-13.mp3',
+      'patterns/Rhythm-14.mp3',
+      'patterns/Rhythm-15.mp3',
+      'patterns/Rhythm-16.mp3',
+      'patterns/Rhythm-17.mp3',
+      'patterns/Rhythm-18.mp3',
+      'patterns/Rhythm-19.mp3',
+      'patterns/Rhythm-20.mp3',
+      'patterns/Rhythm-21.mp3',
+      'patterns/Rhythm-22.mp3',
+      'patterns/Rhythm-23.mp3',
+      'patterns/Rhythm-24.mp3',
+      'patterns/Rhythm-25.mp3',
+      'patterns/Rhythm-26.mp3',
+      'patterns/Rhythm-27.mp3',
+      'patterns/Rhythm-28.mp3',
+      'patterns/Rhythm-29.mp3',
+      'patterns/Rhythm-30.mp3',
+      'patterns/Rhythm-31.mp3',
+      'patterns/Rhythm-32.mp3',
+      'patterns/Rhythm-33.mp3',
+      'patterns/Rhythm-34.mp3',
+      'patterns/Rhythm-35.mp3',
+      'patterns/Rhythm-36.mp3',
+      'patterns/Rhythm-37.mp3',
+      'patterns/Rhythm-38.mp3',
+      'patterns/Rhythm-39.mp3',
+      'patterns/Rhythm-40.mp3',
+      'patterns/Rhythm-41.mp3',
+      'patterns/Rhythm-42.mp3',
+      'patterns/Rhythm-43.mp3',
+      'patterns/Rhythm-44.mp3',
+      'patterns/Rhythm-45.mp3',
+      'patterns/Rhythm-46.mp3',
+      'patterns/Rhythm-47.mp3',
+      'patterns/Rhythm-48.mp3',
+      'patterns/Rhythm-49.mp3',
+      'patterns/Rhythm-50.mp3',
+      'patterns/Rhythm-51.mp3',
+      'patterns/Rhythm-52.mp3',
+      'patterns/Rhythm-53.mp3',
+      'patterns/Rhythm-54.mp3',
+      'patterns/Rhythm-55.mp3',
+      'patterns/Rhythm-56.mp3',
+      'patterns/Rhythm-57.mp3',
+      'patterns/Rhythm-58.mp3',
+      'patterns/Rhythm-59.mp3',
+      'patterns/Rhythm-60.mp3',
+      'patterns/Rhythm-61.mp3',
+      'patterns/Rhythm-62.mp3',
+      'patterns/Rhythm-63.mp3',
+      'patterns/Rhythm-64.mp3',
+      'patterns/Rhythm-65.mp3',
+      'patterns/Rhythm-66.mp3',
+      'patterns/Rhythm-67.mp3',
+      'patterns/Rhythm-68.mp3',
+      'patterns/Rhythm-69.mp3',
+      'patterns/Rhythm-70.mp3',
+      'patterns/Rhythm-71.mp3',
+      'patterns/Rhythm-72.mp3',
+      'patterns/Rhythm-73.mp3',
+      'patterns/Rhythm-74.mp3',
+      'patterns/Rhythm-75.mp3',
+      'patterns/Rhythm-76.mp3',
+      'patterns/Rhythm-77.mp3',
+      'patterns/Rhythm-78.mp3',
+      'patterns/Rhythm-79.mp3',
+      'patterns/Rhythm-80.mp3',
+      'patterns/Rhythm-81.mp3',
+      'patterns/Rhythm-82.mp3',
+      'patterns/Rhythm-83.mp3',
+      'patterns/Rhythm-84.mp3',
+      'patterns/Rhythm-85.mp3',
+      'patterns/Rhythm-86.mp3',
+      'patterns/Rhythm-87.mp3',
+      'patterns/Rhythm-88.mp3',
+      'patterns/Rhythm-89.mp3',
+      'patterns/Rhythm-90.mp3',
+      'patterns/Rhythm-91.mp3',
+      'patterns/Rhythm-92.mp3',
+      'patterns/Rhythm-93.mp3',
+      'patterns/Rhythm-94.mp3',
+      'patterns/Rhythm-95.mp3',
+      'patterns/Rhythm-96.mp3',
+      'patterns/Rhythm-97.mp3',
+      'patterns/Rhythm-98.mp3',
+      'patterns/Rhythm-99.mp3'
+    ];
+
+    var sample = jsPsych.randomization.sampleWithoutReplacement(list, 9);
+  
+    var timeline = [];
+
+    timeline.push({
+      type: 'html-keyboard-response' ,
+      stimulus: "<p>For this experiment, you will listen to 5 pairs of rhythms </p>" +
+        "<p> and choose which rhythms are more unusual. </p> " +
+        "<p>  Press any key to continue.</p>" 
+    });
+
+    timeline.push({
+      type:'forced-choice-audio' ,
+      stimulus: [
+        sample[8],
+        sample[5]
+      ],
+      prompt:"<p>Click the play button to listen to the rhythms. </p>" + 
+        "<p> Once you listen to both rhythms, choose which rhythm sounds more unusual.</p>" 
+    });
+
+    timeline.push({
+      type: 'forced-choice-audio',
+      stimulus: [
+        sample[0],
+        sample[1]
+      ],
+      prompt: "<p>Which is more unusual?</p>"
+    });
+
+    timeline.push({
+      type: 'forced-choice-audio',
+      stimulus: [
+        sample[2],
+        sample[3],
+      ],
+      prompt: "<p>Which is more unusual?</p>"
+    });
+
+    timeline.push({
+      type: 'forced-choice-audio',
+      stimulus: [
+        sample[4],
+        sample[5],
+      ],
+      prompt: "<p>Which is more unusual?</p>"
+    });
+
+    timeline.push({
+      type: 'forced-choice-audio',
+      stimulus: [
+        sample[6],
+        sample[7],
+      ],
+      prompt: "<p>Which is more unusual?</p>"
+    });
+
+    timeline.push({
+      type: 'forced-choice-audio',
+      stimulus: [
+        sample[8],
+        sample[9],
+      ],
+      prompt: "<p>Which is more unusual?</p>"
+    });
+
+
+
+    timeline.push({
+      type: 'html-keyboard-response' ,
+      stimulus: "<p> You have completed the experiment. </p>" +
+      "<p> Click to learn what this experiment is about.</p>"
+    });
+
+    timeline.push({
+      type:'html-keyboard-response' ,
+      stimulus: "<p> The purpose of this research is to investigate the</p>" +
+      "<p> connection between rhythm pattern unusualness and its beauty. <p>" + 
+      "<p> In this survey, you have been asked to rate the unusualness of a rhythmic pattern, </p>" +
+      "<p> which will, eventually, be compared to the ratings of these patterns' beauty.</p>"
+    });
+
+    timeline.push ({
+      type: 'html-keyboard-response' ,
+      stimulus: "<p> Thank you for completing this experiment!</p>" 
+    });
+
+    jsPsych.init({
+      timeline: timeline,
+      use_webaudio: false,
+      default_iti: 500,
+      on_finish: function(){jsPsych.data.displayData();}
+    });
+
+  </script>
+</html>

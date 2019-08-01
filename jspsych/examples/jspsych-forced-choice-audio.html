@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../jspsych.js"></script>
+    <script src="../plugins/jspsych-forced-choice-audio.js"></script>
+    <script src="../plugins/jspsych-html-button-response.js"></script>
+    <link rel="stylesheet" href="../css/jspsych.css"></link>
+  </head>
+  <body></body>
+  <script>
+
+  var timeline = [];
+
+  timeline.push({
+    type: 'forced-choice-audio',
+    stimulus: [
+      'sound/speech_green.mp3',
+      'sound/speech_red.mp3',
+    ],
+    prompt: "<p>Which is more unusual?</p>"
+  });
+
+  timeline.push({
+    type: 'forced-choice-audio',
+    stimulus: [
+      'sound/speech_green.mp3',
+      'sound/speech_red.mp3',
+    ],
+    prompt: "<p>Which is more beautiful?</p>"
+  });
+
+  jsPsych.init({
+    timeline: timeline,
+    use_webaudio: false,
+    default_iti: 500,
+    on_finish: function(){jsPsych.data.displayData();}
+  });
+
+  </script>
+</html>
