@@ -208,7 +208,7 @@ jsPsych.plugins["forced-choice-audio"] = (function() {
       // gather the data to store for the trial
       var trial_data = {
         "rt": response.rt,
-        "stimulus": trial.stimulus,
+        "stimulus": JSON.stringify(trial.stimulus),
         "button_pressed": response.button,
         "play_history": JSON.stringify(play_history)
       };

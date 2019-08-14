@@ -203,8 +203,8 @@
     timeline.push({
       type: 'survey-text',
       questions: [
-        {prompt: "In the past three days, about how many hours did you spend listening to or playing music?", name: 'Answer'},
-        {prompt: "How many years of musical training have you had (including music theory, choir, instruments, etc.)?" , name: 'Answer'}        
+        {prompt: "In the past three days, about how many hours did you spend listening to or playing music?", name: 'HowManyHours'},
+        {prompt: "How many years of musical training have you had (including music theory, choir, instruments, etc.)?" , name: 'HowManyYears'}        
       ]
     });
 
@@ -232,8 +232,8 @@
       type:'html-keyboard-response' ,
       stimulus: "<p> The purpose of this research is to investigate the</p>" +
       "<p> connection between rhythm pattern unusualness and its beauty. <p>" + 
-      "<p> In this survey, you have been asked to rate the unusualness of a rhythmic pattern, </p>" +
-      "<p> which will, eventually, be compared to the ratings of these patterns' beauty.</p>"
+      "<p> In this survey, you have been asked to rate either the beauty or the unusualness of a rhythmic pattern. </p>" +
+      "<p> The data collected for the two characteristics will be, eventually, compared to each other.</p>"
     });
 
     timeline.push ({
