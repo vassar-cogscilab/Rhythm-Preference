@@ -5,6 +5,9 @@
     <script src="jspsych/plugins/jspsych-forced-choice-audio.js"></script>
     <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
     <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych/plugins/jspsych-survey-multi-select.js"></script>
+    <script src="js/serverComm.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css"></link>
   </head>
   <body></body>
@@ -113,14 +116,27 @@
       'patterns/Rhythm-99.mp3'
     ];
 
-    var sample = jsPsych.randomization.sampleWithoutReplacement(list, 9);
+    var sample = jsPsych.randomization.sampleWithoutReplacement(list, 10);
   
+    var prolific_pid = jsPsych.data.getURLVariable('prolific_pid');
+    var judgement_condition = jsPsych.randomization.sampleWithoutReplacement(['typicality', 'preference'], 1)[0];
+    jsPsych.data.addProperties({
+      prolific_pid: prolific_pid,
+      conditions: judgement_condition
+    });
+
+    if (judgement_condition=='typicality'){
+      var key_phrase = "sounds more unusual"
+    } else {
+      var key_phrase = "you like more"
+    }; 
+
     var timeline = [];
 
     timeline.push({
       type: 'html-keyboard-response' ,
       stimulus: "<p>For this experiment, you will listen to 5 pairs of rhythms </p>" +
-        "<p> and choose which rhythms are more unusual. </p> " +
+        "<p> and choose which rhythms "+key_phrase+". </p> " +
         "<p>  Press any key to continue.</p>" 
     });
 
@@ -131,7 +147,7 @@
         sample[5]
       ],
       prompt:"<p>Click the play button to listen to the rhythms. </p>" + 
-        "<p> Once you listen to both rhythms, choose which rhythm sounds more unusual.</p>" 
+        "<p> Once you listen to both rhythms, choose which rhythm "+key_phrase+".</p>" 
     });
 
     timeline.push({
@@ -140,7 +156,7 @@
         sample[0],
         sample[1]
       ],
-      prompt: "<p>Which is more unusual?</p>"
+      prompt: "<p>Choose the rhythm that "+key_phrase+". (1 of 5)</p>"
     });
 
     timeline.push({
@@ -149,8 +165,8 @@
         sample[2],
         sample[3],
       ],
-      prompt: "<p>Which is more unusual?</p>"
-    });
+      prompt: "<p>Choose the rhythm that "+key_phrase+". (2 of 5)</p>"
+    }); 
 
     timeline.push({
       type: 'forced-choice-audio',
@@ -158,7 +174,7 @@
         sample[4],
         sample[5],
       ],
-      prompt: "<p>Which is more unusual?</p>"
+      prompt: "<p>Choose the rhythm that "+key_phrase+". (3 of 5)</p>"
     });
 
     timeline.push({
@@ -167,7 +183,7 @@
         sample[6],
         sample[7],
       ],
-      prompt: "<p>Which is more unusual?</p>"
+      prompt: "<p>Choose the rhythm that "+key_phrase+". (4 of 5)</p>"
     });
 
     timeline.push({
@@ -176,15 +192,40 @@
         sample[8],
         sample[9],
       ],
-      prompt: "<p>Which is more unusual?</p>"
+      prompt: "<p>Choose the rhythm that "+key_phrase+". (5 of 5)</p>"
     });
 
+    timeline.push({
+      type: 'html-keyboard-response' , 
+      stimulus: "<p>Now you will answer a few questions.</p>" + "<p>Press any key to continue.</p>"
+    });
 
+    timeline.push({
+      type: 'survey-text',
+      questions: [
+        {prompt: "In the past three days, about how many hours did you spend listening to or playing music?", name: 'Answer'},
+        {prompt: "How many years of musical training have you had (including music theory, choir, instruments, etc.)?" , name: 'Answer'}        
+      ]
+    });
+
+    timeline.push({
+      type: 'survey-multi-select' , 
+      questions: [
+        {
+          prompt: "Describe your music education experience. Check all that apply:",
+          options: ["I took/take general music in primary school.", "I took/take private music lessons.", "I took/take instrumental/choir classes in high school.", "I took/take music classes in college.", "I was/am a music major in college." + "I am pursuing/have received a graduate's degree." + "I was/am a professional musician / composer."] ,
+          vertical: true
+        }
+      ]
+    });
 
     timeline.push({
       type: 'html-keyboard-response' ,
       stimulus: "<p> You have completed the experiment. </p>" +
-      "<p> Click to learn what this experiment is about.</p>"
+      "<p> Press any key to learn what this experiment is about.</p>",
+      on_start: function(){
+        serverComm.save_data(jsPsych.data.get().values());
+      }
     });
 
     timeline.push({
