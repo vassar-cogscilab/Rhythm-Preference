@@ -7,6 +7,7 @@
     <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych/plugins/jspsych-survey-multi-select.js"></script>
+    <script src="jspsych/plugins/jspsych-audio-keyboard-response.js"></script>
     <script src="js/serverComm.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css"></link>
   </head>
@@ -135,10 +136,28 @@
 
     timeline.push({
       type: 'html-keyboard-response' ,
-      stimulus: "<p>For this experiment, you will listen to 5 pairs of rhythms </p>" +
-        "<p> and choose which rhythms "+key_phrase+". </p> " +
-        "<p>  Press any key to continue.</p>" 
+      stimulus: "<div style='max-width:700px;'><p>For this experiment, you will listen to 5 pairs of rhythms" +
+        " and choose which rhythm in each pair "+key_phrase+".</p>" +
+        "<p>You will need to be able to hear audio in order to complete the experiment.</p>"+
+        "<p>Press any key to continue.</p>" 
     });
+
+    timeline.push({
+      timeline: [{
+        type: 'audio-keyboard-response',
+        stimulus: 'base64.wav',
+        prompt: '<p>Listen to the audio for instructions.</p>',
+        trial_duration: 5500,
+        choices: ['w'],
+        post_trial_gap: 0,
+      }],
+      loop_function: function(data){
+        if(data.values()[0].key_press == 87){
+          return false;
+        }
+        return true;
+      }
+    })
 
     timeline.push({
       type:'forced-choice-audio' ,
@@ -146,8 +165,9 @@
         sample[8],
         sample[5]
       ],
-      prompt:"<p>Click the play button to listen to the rhythms. </p>" + 
-        "<p> Once you listen to both rhythms, choose which rhythm "+key_phrase+".</p>" 
+      prompt: "<p>This is a practice round.</p>"+
+        "<p>Click the play buttons to listen to the rhythms.</p>" + 
+        "<p>Once you listen to both rhythms, choose which rhythm "+key_phrase+".</p>" 
     });
 
     timeline.push({
@@ -213,7 +233,7 @@
       questions: [
         {
           prompt: "Describe your music education experience. Check all that apply:",
-          options: ["I took/take general music in primary school.", "I took/take private music lessons.", "I took/take instrumental/choir classes in high school.", "I took/take music classes in college.", "I was/am a music major in college." + "I am pursuing/have received a graduate's degree." + "I was/am a professional musician / composer."] ,
+          options: ["I took/take general music in primary school.", "I took/take private music lessons.", "I took/take instrumental/choir classes in high school.", "I took/take music classes in college.", "I was/am a music major in college.", "I am pursuing/have received a graduate's degree.", "I was/am a professional musician / composer."] ,
           vertical: true
         }
       ]
@@ -230,22 +250,19 @@
 
     timeline.push({
       type:'html-keyboard-response' ,
-      stimulus: "<p> The purpose of this research is to investigate the</p>" +
-      "<p> connection between rhythm unusualness and its beauty. <p>" + 
-      "<p> In this survey, you have been asked to rate either the beauty or the unusualness of a rhythmic pattern. </p>" +
-      "<p> The data collected for the two characteristics will be, eventually, compared to each other.</p>"
-    });
-
-    timeline.push ({
-      type: 'html-keyboard-response' ,
-      stimulus: "<p> Thank you for completing this experiment!</p>" 
+      stimulus: "<div style='max-width:700px;'><p> The purpose of this research is to investigate the" +
+      " connection between the unusualness of rhythms and preference for rhythms. " + 
+      " You have been asked to rate either your preference for or the unusualness of certain rhythmic patterns. Other participants will be asked to rate the other characteristic. " +
+      " The data collected for the two characteristics will be compared to each other. We expect that moderately unusual rhythms will be the ones that are preferred most often.</p>"+
+      " <p>Thank you for participating! Click <a href='https://app.prolific.co/submissions/complete?cc=88HJ018C'>this link</a> to return to Prolific and complete the experiment. You do not need a completion code.</p>"+
+      "</div>",
+      choices: jsPsych.NO_KEYS
     });
 
     jsPsych.init({
       timeline: timeline,
       use_webaudio: false,
-      default_iti: 500,
-      on_finish: function(){jsPsych.data.displayData();}
+      default_iti: 500
     });
 
   </script>
