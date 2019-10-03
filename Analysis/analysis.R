@@ -56,15 +56,52 @@ main_data <- select(all.data, stimulus, trial_type, button_pressed, conditions)%
   select(stimulus, button_pressed, conditions) %>%
   
   separate(stimulus, c("firstpattern", "secondpattern"), ",") %>%
-  
-  
-  mutate(
-    button_pressed == 0,
-    
-    winners = firstpattern,
-    losers = secondpattern
-  ) 
+  mutate(firstpattern=str_extract(firstpattern, "[0-9]+"),
+         secondpattern=str_extract(secondpattern, "[0-9]+")) %>%
+  mutate(winner = if_else(button_pressed==1, secondpattern, firstpattern),
+         loser = if_else(button_pressed==1, firstpattern, secondpattern))
 
- 
+library(EloChoice)
 
+??EloChoice
+
+typicality.data <- main_data %>% filter(conditions=="typicality")
+typicality.elo <- elochoice(winner=typicality.data$winner, loser=typicality.data$loser, runs=100)
+typicality.ratings <- ratings(typicality.elo)
+typicality.ratings.df <- data.frame(stimulus = names(typicality.ratings), typicality.elo = typicality.ratings)
+
+preference.data <- main_data %>% filter(conditions=="preference")
+preference.elo <- elochoice(winner=preference.data$winner, loser=preference.data$loser, runs=100)
+preference.ratings <- ratings(preference.elo)
+preference.ratings.df <- data.frame(stimulus = names(preference.ratings), preference.elo = preference.ratings)
+
+elo.ratings.data <- typicality.ratings.df %>% left_join(preference.ratings.df) %>% arrange(as.numeric(as.character(stimulus)))
+
+## PLOT!
+
+library(ggplot2)
+
+ggplot(data = elo.ratings.data, mapping = aes(x = typicality.elo, y = note.density)) + geom_point() + geom_smooth()
+
+# Get musical patterns loaded
+
+library(jsonlite)
+
+patterns <- read_json("patterns.json", simplifyVector = T)
+
+patterns[1,]
+
+how.many.notes <- function(v){
+  return(sum(v != "r"))
+}
+
+note.density.result <- apply(patterns, 1, how.many.notes)
+
+elo.ratings.data$note.density <- note.density.result
+
+# some ideas:
+
+# distribution equality (HvsL)
+# down-beats vs. off-beats
+# pattern change (we created the patterns by copying one measure. how much change is there. look at how measures are same vs. different )
 
