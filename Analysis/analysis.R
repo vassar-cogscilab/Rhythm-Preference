@@ -102,6 +102,14 @@ elo.ratings.data$note.density <- note.density.result
 # some ideas:
 
 # distribution equality (HvsL)
+
+numhigh <- select(patterns, v1 == "h", "l") 
+  
+  
+
 # down-beats vs. off-beats
+
+
+
 # pattern change (we created the patterns by copying one measure. how much change is there. look at how measures are same vs. different )
 
