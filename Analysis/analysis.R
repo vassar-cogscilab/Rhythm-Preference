@@ -65,23 +65,59 @@ library(EloChoice)
 
 ??EloChoice
 
-typicality.data <- main_data %>% filter(conditions=="typicality")
-typicality.elo <- elochoice(winner=typicality.data$winner, loser=typicality.data$loser, runs=100)
-typicality.ratings <- ratings(typicality.elo)
-typicality.ratings.df <- data.frame(stimulus = names(typicality.ratings), typicality.elo = typicality.ratings)
+atypicality.data <- main_data %>% filter(conditions=="typicality")
+atypicality.elo <- elochoice(winner=atypicality.data$winner, loser=atypicality.data$loser, runs=100)
+atypicality.ratings <- ratings(atypicality.elo)
+atypicality.ratings.df <- data.frame(stimulus = names(atypicality.ratings), atypicality.elo = atypicality.ratings)
 
 preference.data <- main_data %>% filter(conditions=="preference")
 preference.elo <- elochoice(winner=preference.data$winner, loser=preference.data$loser, runs=100)
 preference.ratings <- ratings(preference.elo)
 preference.ratings.df <- data.frame(stimulus = names(preference.ratings), preference.elo = preference.ratings)
 
-elo.ratings.data <- typicality.ratings.df %>% left_join(preference.ratings.df) %>% arrange(as.numeric(as.character(stimulus)))
+elo.ratings.data <- atypicality.ratings.df %>% left_join(preference.ratings.df) %>% arrange(as.numeric(as.character(stimulus)))
 
 ## PLOT!
 
 library(ggplot2)
 
-ggplot(data = elo.ratings.data, mapping = aes(x = typicality.elo, y = note.density)) + geom_point() + geom_smooth()
+Atypiality.graph <- ggplot(data = elo.ratings.data, mapping = aes(x = stimulus, y = atypicality.elo)) + geom_point() + geom_smooth()
+
+Preference.graph <- ggplot(data = elo.ratings.data, mapping = aes(x = stimulus, y = preference.elo)) + geom_point() + geom_smooth()
+
+ggplot(data = elo.ratings.data, mapping = aes(x = atypicality.elo, y = preference.elo)) + geom_point() + geom_smooth()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##PART TWO
+
+
+
+ggplot(data = elo.ratings.data, mapping = aes(x = atypicality.elo, y = note.density)) + geom_point() + geom_smooth()
+
 
 # Get musical patterns loaded
 
@@ -103,7 +139,16 @@ elo.ratings.data$note.density <- note.density.result
 
 # distribution equality (HvsL)
 
-numhigh <- select(patterns, v1 == "h", "l") 
+distribution.equality <- function(v){
+  
+  return(sum(v != "r"))
+}
+
+note.distribution.result <- apply(patterns, 1, distribution.equality)
+
+elo.ratings.data$distribution <- distribution.result
+
+
   
   
 
