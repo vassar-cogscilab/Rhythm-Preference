@@ -92,26 +92,6 @@ ggplot(data = elo.ratings.data, mapping = aes(x = atypicality.elo, y = preferenc
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ##PART TWO
 
 
